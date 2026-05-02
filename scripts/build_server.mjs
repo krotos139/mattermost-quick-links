@@ -41,7 +41,20 @@ for (const [target, outputRel] of targets) {
     console.log(`go build → ${outputRel}`);
     execFileSync(
         'go',
-        ['build', '-trimpath', '-o', outputAbs, '.'],
+        [
+            'build',
+            '-trimpath',
+
+            // Strip the symbol table (-s) and DWARF debug info (-w). Roughly
+            // 30% smaller binaries at the cost of less informative panic
+            // traces (only addresses, no function names) and broken pprof
+            // symbolisation. Acceptable for a tarball that ships to many
+            // Mattermost servers; revert this flag if you need to debug a
+            // production crash.
+            '-ldflags=-s -w',
+
+            '-o', outputAbs, '.',
+        ],
         {
             cwd: SERVER_DIR,
             stdio: 'inherit',
