@@ -1,0 +1,42 @@
+{
+    "id": "com.frame.webframes",
+    "name": "Web Frames",
+    "version": "0.0.1",
+    "description": "Adds admin-configurable web pages to Mattermost as product menu items (rendered in an iframe) and matching slash commands so mobile users can open the same resource in their browser.",
+    "homepage_url": "https://github.com/frame-team/mattermost-plugin-webframes",
+    "support_url": "https://github.com/frame-team/mattermost-plugin-webframes/issues",
+    "icon_path": "assets/icon.svg",
+    "min_server_version": "9.0.0",
+    "server": {
+        "executables": {
+            "linux-amd64": "server/dist/plugin-linux-amd64",
+            "linux-arm64": "server/dist/plugin-linux-arm64",
+            "darwin-amd64": "server/dist/plugin-darwin-amd64",
+            "darwin-arm64": "server/dist/plugin-darwin-arm64",
+            "windows-amd64": "server/dist/plugin-windows-amd64.exe"
+        }
+    },
+    "webapp": {
+        "bundle_path": "webapp/dist/main.js"
+    },
+    "settings_schema": {
+        "header": "Adds admin-configurable web pages to the Mattermost product switcher menu (where Channels / Boards / Playbooks live). Each item is rendered in an iframe (or opened in a new window) and exposes a matching slash command so mobile users can open the same resource in their browser.",
+        "footer": "Note: the embedded site must allow being framed (no restrictive X-Frame-Options or Content-Security-Policy frame-ancestors directive). If the iframe stays blank, switch the item to 'open in new window'.",
+        "settings": [
+            {
+                "key": "Items",
+                "display_name": "Web frames",
+                "type": "custom",
+                "help_text": "Each row becomes one entry in the product switcher menu and one slash command. Drag the handle to reorder. Reload the Mattermost UI after saving for the menu changes to take effect.",
+                "default": ""
+            },
+            {
+                "key": "AllowHTTP",
+                "display_name": "Allow non-HTTPS URLs",
+                "type": "bool",
+                "help_text": "Permit plain http:// in the URL field. Off by default — most embeds need https for the iframe to render in modern browsers.",
+                "default": false
+            }
+        ]
+    }
+}

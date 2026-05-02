@@ -1,0 +1,20 @@
+{
+    "name": "mattermost-plugin-webframes",
+    "private": true,
+    "version": "0.0.1",
+    "description": "Build orchestration for the Web Frames Mattermost plugin (used in place of make on systems without it).",
+    "scripts": {
+        "apply": "go run ./build/manifest apply",
+        "server": "node scripts/build_server.mjs",
+        "server:current": "node scripts/build_server.mjs --current",
+        "webapp:install": "cd webapp && npm install",
+        "webapp": "cd webapp && npm run build",
+        "bundle": "node scripts/bundle.mjs",
+        "dist": "npm run apply && npm run server && npm run webapp && npm run bundle",
+        "dist:current": "npm run apply && npm run server:current && npm run webapp && npm run bundle",
+        "clean": "node scripts/clean.mjs"
+    },
+    "devDependencies": {
+        "tar": "^7.4.3"
+    }
+}
