@@ -1,7 +1,7 @@
 {
-    "name": "mattermost-plugin-webframes",
+    "name": "mattermost-quick-links",
     "private": true,
-    "version": "0.0.1",
+    "version": "0.1.1",
     "description": "Build orchestration for the Web Frames Mattermost plugin (used in place of make on systems without it).",
     "scripts": {
         "apply": "go run ./build/manifest apply",

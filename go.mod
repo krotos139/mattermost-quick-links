@@ -1,4 +1,4 @@
-module github.com/frame-team/mattermost-plugin-webframes
+module github.com/krotos139/mattermost-quick-links
 
 go 1.25
 

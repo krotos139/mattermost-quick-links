@@ -21,8 +21,7 @@ import (
 // JSON-encoded list of WebframeItem records (kept opaque on the server for
 // now — only the slash-command code in the next milestone parses it).
 type configuration struct {
-	Items     string
-	AllowHTTP bool
+	Items string
 }
 
 // Clone shallow copies the configuration. Your implementation may require a deep copy if

@@ -7,7 +7,6 @@ import IconPicker from './icon_picker';
 type Props = {
     initial: WebframeItem;
     others: WebframeItem[];
-    allowHTTP: boolean;
     onSave: (item: WebframeItem) => void;
     onCancel: () => void;
 };
@@ -40,13 +39,13 @@ function findError(errors: ValidationError[], field: string): string | undefined
     return errors.find((e) => e.field === field)?.message;
 }
 
-const ItemModal: React.FC<Props> = ({initial, others, allowHTTP, onSave, onCancel}) => {
+const ItemModal: React.FC<Props> = ({initial, others, onSave, onCancel}) => {
     const [draft, setDraft] = useState<WebframeItem>(initial);
     const [submitted, setSubmitted] = useState(false);
 
     const errors = useMemo(
-        () => validateItem(draft, others, allowHTTP),
-        [draft, others, allowHTTP],
+        () => validateItem(draft, others),
+        [draft, others],
     );
 
     const update = <K extends keyof WebframeItem>(key: K, value: WebframeItem[K]) => {
@@ -94,7 +93,7 @@ const ItemModal: React.FC<Props> = ({initial, others, allowHTTP, onSave, onCance
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={handleKeyDown}
             >
-                <h3 style={{marginTop: 0}}>{initial.displayName ? 'Edit web frame' : 'Add web frame'}</h3>
+                <h3 style={{marginTop: 0}}>{initial.displayName ? 'Edit link' : 'Add link'}</h3>
 
                 <div style={fieldStyle}>
                     <label style={labelStyle}>{'Name'}</label>
@@ -135,24 +134,6 @@ const ItemModal: React.FC<Props> = ({initial, others, allowHTTP, onSave, onCance
                         onChange={(e) => update('url', e.target.value)}
                     />
                     {showError('url') && <div style={errorStyle}>{showError('url')}</div>}
-                </div>
-
-                <div style={fieldStyle}>
-                    <label style={labelStyle}>{'Open mode'}</label>
-                    <label style={{display: 'block', fontWeight: 400}}>
-                        <input
-                            type='radio'
-                            checked={draft.openMode === 'iframe'}
-                            onChange={() => update('openMode', 'iframe')}
-                        />{' '}{'Embed in iframe (in the product menu)'}
-                    </label>
-                    <label style={{display: 'block', fontWeight: 400}}>
-                        <input
-                            type='radio'
-                            checked={draft.openMode === 'newWindow'}
-                            onChange={() => update('openMode', 'newWindow')}
-                        />{' '}{'Open in a new browser window'}
-                    </label>
                 </div>
 
                 <div style={fieldStyle}>

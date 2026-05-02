@@ -45,12 +45,12 @@ func (p *Plugin) OnActivate() error {
 	p.commandsLock.Unlock()
 
 	botID, err := p.client.Bot.EnsureBot(&model.Bot{
-		Username:    "webframes",
-		DisplayName: "Web Frames",
-		Description: "Posts links to admin-configured web frames in response to slash commands.",
+		Username:    "quicklinks",
+		DisplayName: "Quick Links",
+		Description: "Posts links to admin-configured shortcuts in response to slash commands.",
 	})
 	if err != nil {
-		return errors.Wrap(err, "failed to ensure Web Frames bot")
+		return errors.Wrap(err, "failed to ensure Quick Links bot")
 	}
 	p.botUserID = botID
 

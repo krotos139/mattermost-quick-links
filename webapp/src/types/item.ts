@@ -6,8 +6,7 @@ export type WebframeItem = {
     id: string;                 // stable opaque id, used in URLs and CSS class names
     displayName: string;        // shown in the product switcher and command response
     slashTrigger: string;       // without leading slash, e.g. "wiki"
-    url: string;                // absolute URL
-    openMode: 'iframe' | 'newWindow';
+    url: string;                // absolute URL — always opened in a new browser window
     iconPreset: string;         // compass-icons name, e.g. 'globe'. Wins over iconDataUrl.
     iconDataUrl: string;        // custom uploaded icon (data URL). Used only if iconPreset is empty.
     ephemeralTtlSec: number;    // 0 = never auto-delete the slash response
@@ -21,7 +20,7 @@ export const ID_RE = /^[a-z0-9-]+$/;
 
 export type ValidationError = {field: keyof WebframeItem | 'general'; message: string};
 
-export function validateItem(item: WebframeItem, others: WebframeItem[], allowHTTP: boolean): ValidationError[] {
+export function validateItem(item: WebframeItem, others: WebframeItem[]): ValidationError[] {
     const errors: ValidationError[] = [];
 
     if (!item.displayName.trim()) {
@@ -41,10 +40,8 @@ export function validateItem(item: WebframeItem, others: WebframeItem[], allowHT
     } catch {
         errors.push({field: 'url', message: 'Not a valid URL'});
     }
-    if (parsed) {
-        if (parsed.protocol !== 'https:' && !(allowHTTP && parsed.protocol === 'http:')) {
-            errors.push({field: 'url', message: 'Only https:// (enable "Allow HTTP" in settings for http://)'});
-        }
+    if (parsed && parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+        errors.push({field: 'url', message: 'URL must start with http:// or https://'});
     }
 
     if (!Number.isFinite(item.ephemeralTtlSec) || item.ephemeralTtlSec < 0) {
@@ -60,7 +57,6 @@ export function makeEmptyItem(): WebframeItem {
         displayName: '',
         slashTrigger: '',
         url: 'https://',
-        openMode: 'iframe',
         iconPreset: '',
         iconDataUrl: '',
         ephemeralTtlSec: DEFAULT_TTL_SEC,
@@ -99,7 +95,6 @@ function coerceItem(v: Partial<WebframeItem>): WebframeItem {
         displayName: typeof v.displayName === 'string' ? v.displayName : '',
         slashTrigger: typeof v.slashTrigger === 'string' ? v.slashTrigger.toLowerCase() : '',
         url: typeof v.url === 'string' ? v.url : '',
-        openMode: v.openMode === 'newWindow' ? 'newWindow' : 'iframe',
         iconPreset: typeof v.iconPreset === 'string' ? v.iconPreset : '',
         iconDataUrl: typeof v.iconDataUrl === 'string' ? v.iconDataUrl : '',
         ephemeralTtlSec: typeof v.ephemeralTtlSec === 'number' && v.ephemeralTtlSec >= 0 ? v.ephemeralTtlSec : DEFAULT_TTL_SEC,

@@ -1,4 +1,4 @@
-// Web Frames — Mattermost plugin
+// Quick Links — Mattermost plugin
 // See https://developers.mattermost.com/extend/plugins/webapp/reference/
 
 import React from 'react';
@@ -11,7 +11,6 @@ import type {GlobalState} from '@mattermost/types/store';
 import type {PluginRegistry} from 'types/mattermost-webapp';
 
 import ExternalRedirect from './components/external_redirect';
-import IframeView from './components/iframe_view';
 import ProductHeaderTitle from './components/product_header_title';
 import ItemsEditor from './components/settings/items_editor';
 import {parseItems, type WebframeItem} from './types/item';
@@ -46,14 +45,12 @@ function registerOne(registry: PluginRegistry, item: WebframeItem) {
         switcherIcon = DEFAULT_ICON;
     }
 
-    // For "open in new window" mode we keep switcherLinkURL pointing at our
-    // baseURL (so the host's router stays happy and does not reload the UI),
-    // and have mainComponent open the external URL on mount and pop history.
-    // Setting switcherLinkURL to the external URL directly does NOT work —
-    // the host treats it as an internal route and just reloads.
-    const Main: React.FC = item.openMode === 'newWindow' ?
-        () => <ExternalRedirect url={item.url} title={item.displayName}/> :
-        () => <IframeView url={item.url} title={item.displayName}/>;
+    // Every item opens externally. We still need a registered product so the
+    // menu entry exists; the mainComponent (ExternalRedirect) launches the
+    // external URL on mount and pops history so the MM tab returns to where
+    // the user was. Setting switcherLinkURL directly to the external URL
+    // does NOT work — the host's router treats it as an internal route.
+    const Main: React.FC = () => <ExternalRedirect url={item.url} title={item.displayName}/>;
     const Header: React.FC = () => <ProductHeaderTitle title={item.displayName}/>;
     Main.displayName = `WebframeMain[${item.id}]`;
     Header.displayName = `WebframeHeader[${item.id}]`;

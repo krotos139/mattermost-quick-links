@@ -3,17 +3,17 @@
 // `icon-{name}` whose ::before content is a glyph from the icon font.
 //
 // To support per-item admin-uploaded icons, we register each item with a
-// synthetic name (`webframes-{itemId}`) and inject a `<style>` tag that turns
-// `i.icon-webframes-{itemId}::before` into a background-image of the uploaded
+// synthetic name (`quicklinks-{itemId}`) and inject a `<style>` tag that turns
+// `i.icon-quicklinks-{itemId}::before` into a background-image of the uploaded
 // data-URL. The icon font's :before is empty (the unknown name has no glyph),
 // so our background takes over without fighting the font.
 
-const STYLE_ID = 'webframes-icon-styles';
+const STYLE_ID = 'quicklinks-icon-styles';
 
 export function iconClassName(itemId: string): string {
     // Returned value is what we pass to registerProduct as switcherIcon. The
     // host wraps it as `icon-${name}`.
-    return `webframes-${itemId}`;
+    return `quicklinks-${itemId}`;
 }
 
 function getStyleElement(): HTMLStyleElement {

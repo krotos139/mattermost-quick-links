@@ -88,7 +88,7 @@ func (p *Plugin) ExecuteCommand(_ *plugin.Context, args *model.CommandArgs) (*mo
 	if !ok {
 		return &model.CommandResponse{
 			ResponseType: model.CommandResponseTypeEphemeral,
-			Text:         fmt.Sprintf("Unknown Web Frames command: /%s", trigger),
+			Text:         fmt.Sprintf("Unknown Quick Links command: /%s", trigger),
 		}, nil
 	}
 

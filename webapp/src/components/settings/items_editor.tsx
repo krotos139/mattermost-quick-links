@@ -120,9 +120,6 @@ const SortableRow: React.FC<RowProps> = ({item, onEdit, onDelete, disabled}) => 
             <td style={{...cellStyle, maxWidth: 240, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
                 <span title={item.url}>{item.url}</span>
             </td>
-            <td style={cellStyle}>
-                {item.openMode === 'iframe' ? 'iframe' : 'new window'}
-            </td>
             <td style={cellStyle}>{item.ephemeralTtlSec === 0 ? '∞' : `${item.ephemeralTtlSec}s`}</td>
             <td style={{...cellStyle, textAlign: 'right', whiteSpace: 'nowrap'}}>
                 <button
@@ -146,12 +143,6 @@ const SortableRow: React.FC<RowProps> = ({item, onEdit, onDelete, disabled}) => 
 const ItemsEditor: React.FC<Props> = ({id, value, disabled, onChange, setSaveNeeded}) => {
     const items = useMemo(() => parseItems(value), [value]);
     const [editing, setEditing] = useState<WebframeItem | null>(null);
-
-    // The "Allow HTTP" sibling setting lives on the same plugin config; we just
-    // read it from the form-in-flight value via the host. For the modal it is
-    // OK to start strict and let the admin flip the bool above and reopen the
-    // dialog — this keeps the editor self-contained.
-    const allowHTTP = false;
 
     const sensors = useSensors(useSensor(PointerSensor, {activationConstraint: {distance: 4}}));
 
@@ -200,7 +191,7 @@ const ItemsEditor: React.FC<Props> = ({id, value, disabled, onChange, setSaveNee
         <div style={{width: '100%'}}>
             {items.length === 0 ? (
                 <div style={{padding: 16, color: 'var(--center-channel-color-56, #777)', fontStyle: 'italic'}}>
-                    {'No web frames yet. Click "Add" to create one.'}
+                    {'No links yet. Click "Add" to create one.'}
                 </div>
             ) : (
                 <DndContext
@@ -216,7 +207,6 @@ const ItemsEditor: React.FC<Props> = ({id, value, disabled, onChange, setSaveNee
                                 <th style={headerCellStyle}>{'Name'}</th>
                                 <th style={headerCellStyle}>{'Trigger'}</th>
                                 <th style={headerCellStyle}>{'URL'}</th>
-                                <th style={headerCellStyle}>{'Mode'}</th>
                                 <th style={headerCellStyle}>{'TTL'}</th>
                                 <th style={headerCellStyle}/>
                             </tr>
@@ -253,7 +243,6 @@ const ItemsEditor: React.FC<Props> = ({id, value, disabled, onChange, setSaveNee
                 <ItemModal
                     initial={editing}
                     others={items}
-                    allowHTTP={allowHTTP}
                     onSave={handleSave}
                     onCancel={() => setEditing(null)}
                 />

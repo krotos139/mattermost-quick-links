@@ -13,7 +13,6 @@ type Item struct {
 	DisplayName     string `json:"displayName"`
 	SlashTrigger    string `json:"slashTrigger"`
 	URL             string `json:"url"`
-	OpenMode        string `json:"openMode"`
 	IconDataURL     string `json:"iconDataUrl"`
 	EphemeralTTLSec int    `json:"ephemeralTtlSec"`
 	Enabled         bool   `json:"enabled"`

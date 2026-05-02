@@ -9,7 +9,7 @@ import (
 
 // initRouter sets up HTTP handlers exposed under
 //
-//	<siteUrl>/plugins/com.frame.webframes/api/v1/...
+//	<siteUrl>/plugins/krotos139.quick-links/api/v1/...
 //
 // The webapp fetches /api/v1/items at initialize() time to learn which
 // products to register. We can't read that list from Redux state because
